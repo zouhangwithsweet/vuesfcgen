@@ -1,4 +1,9 @@
-import { baseParse, TemplateChildNode } from '@vue/compiler-core'
+import {
+  baseParse,
+  TemplateChildNode,
+  AttributeNode,
+  DirectiveNode
+} from '@vue/compiler-core'
 import { transform } from '@babel/core'
 
 const NORMAL_ATTR = 6
@@ -96,6 +101,24 @@ export function injectProps(props, context) {
       push(loc.source)
     }
   })
+}
+
+export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>) {
+  return {
+    ...ast,
+    ...options,
+  }
+}
+
+export function createProps(
+  props?: Array<AttributeNode | DirectiveNode>,
+  options?: Partial<
+    Array<AttributeNode | DirectiveNode>
+  >) {
+  return {
+    ...props,
+    ...options,
+  }
 }
 
 export * from '@vue/compiler-core'
