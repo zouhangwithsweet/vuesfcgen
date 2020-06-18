@@ -4,7 +4,7 @@ import { transform } from '@babel/core'
 const NORMAL_ATTR = 6
 
 // babel transform script code
-function transformScript(ast: TemplateChildNode, options?: any) {
+export function transformScript(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'script') {
       const sourceCode = ast.loc.source
@@ -17,7 +17,7 @@ function transformScript(ast: TemplateChildNode, options?: any) {
 }
 
 // todo transform style ast
-function transformStyle(ast: TemplateChildNode, options?: any) {
+export function transformStyle(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'style') {
       return ast.loc.source
@@ -27,7 +27,7 @@ function transformStyle(ast: TemplateChildNode, options?: any) {
 }
 
 // gen template
-function createCodegenContext(ast: TemplateChildNode) {
+export function createCodegenContext(ast: TemplateChildNode) {
   const context = {
     code: ``,
     push(code: string) {
@@ -41,7 +41,7 @@ function createCodegenContext(ast: TemplateChildNode) {
   return context
 }
 
-function genTemplate(ast: TemplateChildNode) {
+export function genTemplate(ast: TemplateChildNode) {
   const context = createCodegenContext(ast)
   const { push, newline } = context
 
@@ -55,7 +55,7 @@ function genTemplate(ast: TemplateChildNode) {
   return context
 }
 
-function genHTML(ast: TemplateChildNode, context) {
+export function genHTML(ast: TemplateChildNode, context) {
   const { push, newline } = context
   if ('children' in ast) {
     ast.children.forEach(child => {
@@ -83,7 +83,7 @@ function genHTML(ast: TemplateChildNode, context) {
   }
 }
 
-function injectProps(props, context) {
+export function injectProps(props, context) {
   const { push } = context
   props.forEach(prop => {
     push(` `)
@@ -97,3 +97,6 @@ function injectProps(props, context) {
     }
   })
 }
+
+export * from '@vue/compiler-core'
+export {}
