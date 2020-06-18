@@ -1,0 +1,38 @@
+{
+  "name": "vuesfcgen",
+  "version": "0.0.1",
+  "description": "Vue sfc code generator",
+  "main": "src/index.js",
+  "scripts": {
+    "cz": "npx git-cz",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zouhangwithsweet/vuesfcgen.git"
+  },
+  "keywords": [
+    "@vue/compiler-core",
+    "codegen"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zouhangwithsweet/vuesfcgen/issues"
+  },
+  "homepage": "https://github.com/zouhangwithsweet/vuesfcgen#readme",
+  "dependencies": {
+    "@babel/core": "^7.10.2",
+    "@types/babel__core": "^7.1.8",
+    "@vue/compiler-core": "^3.0.0-beta.15"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.2.0",
+    "ora": "^4.0.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
