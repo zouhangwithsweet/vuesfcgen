@@ -7,6 +7,7 @@ import {
 import { transform } from '@babel/core'
 
 const NORMAL_ATTR = 6
+const DIRECTIVE_ATTR = 7
 
 // babel transform script code
 export function transformScript(ast: TemplateChildNode, options?: any) {
@@ -95,12 +96,20 @@ export function injectProps(props, context) {
     const { type, name, value, loc } = prop
     if (type === NORMAL_ATTR) {
       value
-        ? push(`${name}=${value.loc.source}`)
+        ? push(`${name}="${value.content}"`)
         : push(`${name}`)
+    } else if (type === DIRECTIVE_ATTR) {
+      push(loc.source)
     } else {
       push(loc.source)
     }
   })
+}
+
+// todo
+export function genDirectiveAttr(node: DirectiveNode, context, options) {
+  const { push } = context
+  push('')
 }
 
 export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>) {
