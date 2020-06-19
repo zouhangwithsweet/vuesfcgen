@@ -4,7 +4,7 @@ import {
   AttributeNode,
   DirectiveNode
 } from '@vue/compiler-core'
-import { transform } from '@babel/core'
+import { transformSync } from '@babel/core'
 import cloneDeep from 'lodash/cloneDeep'
 
 const NORMAL_ATTR = 6
@@ -14,9 +14,9 @@ const DIRECTIVE_ATTR = 7
 export function transformScript(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'script') {
-      const sourceCode = ast.loc.source
+      const sourceCode = ast.loc.source.replace(/<script.*>|<\/script.*>/g, '')
       let code = ``
-      code += transform(sourceCode, options)
+      code += transformSync(sourceCode, options)?.code
       return code
     }
   }
@@ -27,7 +27,7 @@ export function transformScript(ast: TemplateChildNode, options?: any) {
 export function transformStyle(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'style') {
-      return ast.loc.source
+      return ast.loc.source.replace(/<style.*>|<\/style.*>/g, '')
     }
   }
   return ``
