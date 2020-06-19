@@ -5,6 +5,7 @@ import {
   DirectiveNode
 } from '@vue/compiler-core'
 import { transform } from '@babel/core'
+import cloneDeep from 'lodash/cloneDeep'
 
 const NORMAL_ATTR = 6
 const DIRECTIVE_ATTR = 7
@@ -114,7 +115,7 @@ export function genDirectiveAttr(node: DirectiveNode, context, options) {
 
 export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>) {
   return {
-    ...ast,
+    ...cloneDeep(ast),
     ...options,
   }
 }
@@ -125,7 +126,7 @@ export function createProps(
     Array<AttributeNode | DirectiveNode>
   >) {
   return {
-    ...props,
+    ...cloneDeep(props),
     ...options,
   }
 }
