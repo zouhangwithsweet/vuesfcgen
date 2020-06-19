@@ -33,8 +33,15 @@ export function transformStyle(ast: TemplateChildNode, options?: any) {
   return ``
 }
 
+interface codeGenContext {
+  code: string
+  push: (code: string) => void
+  source: string
+  newline: (n?: number) => void
+}
+
 // gen template
-export function createCodegenContext(ast: TemplateChildNode) {
+export function createCodegenContext(ast: TemplateChildNode): codeGenContext {
   const context = {
     code: ``,
     push(code: string) {
@@ -62,10 +69,10 @@ export function genTemplate(ast: TemplateChildNode) {
   return context
 }
 
-export function genHTML(ast: TemplateChildNode, context) {
+export function genHTML(ast: TemplateChildNode, context: codeGenContext) {
   const { push, newline } = context
   if ('children' in ast) {
-    ast.children.forEach(child => {
+    ast.children.forEach((child: any) => {
       const { tag, isSelfClosing, props } = child
       if (tag) {
         if (isSelfClosing) {
@@ -90,11 +97,15 @@ export function genHTML(ast: TemplateChildNode, context) {
   }
 }
 
-export function injectProps(props, context) {
+export function injectProps(
+  props: Array<AttributeNode | DirectiveNode>,
+  context: codeGenContext)
+{
   const { push } = context
   props.forEach(prop => {
     push(` `)
-    const { type, name, value, loc } = prop
+    const { type, name, loc } = prop
+    const value = (props as any).value
     if (type === NORMAL_ATTR) {
       value
         ? push(`${name}="${value.content}"`)
@@ -108,7 +119,11 @@ export function injectProps(props, context) {
 }
 
 // todo
-export function genDirectiveAttr(node: DirectiveNode, context, options) {
+export function genDirectiveAttr(
+  node: DirectiveNode,
+  context: codeGenContext,
+  options?: any)
+{
   const { push } = context
   push('')
 }
