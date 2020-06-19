@@ -4,30 +4,54 @@ import {
   AttributeNode,
   DirectiveNode
 } from '@vue/compiler-core'
-import { transformSync } from '@babel/core'
+import { transform, BabelFileResult } from '@babel/core'
+import postcss from 'postcss'
 import cloneDeep from 'lodash/cloneDeep'
 
 const NORMAL_ATTR = 6
 const DIRECTIVE_ATTR = 7
 
+const transformPromise = (sourceCode: string, options: any): Promise<BabelFileResult> => {
+  return new Promise((resolve, reject) => {
+    transform(sourceCode, options, (error, result) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(result as BabelFileResult)
+    })
+  })
+}
+
 // babel transform script code
-export function transformScript(ast: TemplateChildNode, options?: any) {
+export async function transformScript(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'script') {
       const sourceCode = ast.loc.source.replace(/<script.*>|<\/script.*>/g, '')
       let code = ``
-      code += transformSync(sourceCode, options)?.code
+      const result: BabelFileResult = await transformPromise(sourceCode, options)
+      code += result.code
       return code
     }
   }
   return ``
 }
 
-// todo transform style ast
-export function transformStyle(ast: TemplateChildNode, options?: any) {
+// postcss transform style code
+export async function transformStyle(ast: TemplateChildNode, options?: any) {
   if ('tag' in ast) {
     if (ast.tag === 'style') {
-      return ast.loc.source.replace(/<style.*>|<\/style.*>/g, '')
+      const sourceCode = ast.loc.source.replace(/<style.*>|<\/style.*>/g, '')
+      let code = ``
+      const result = await postcss([
+        require('autoprefixer'),
+        require('postcss-pxtorem')({
+          rootValue: 100,
+          propWhiteList: [],
+          minPixelValue: 2,
+        }),
+      ]).process(sourceCode, { from: undefined })
+      code += result.css
+      return code
     }
   }
   return ``

@@ -17,3 +17,14 @@ var _default = {
 };
 exports.default = _default;"
 `;
+
+exports[`transformStyle 1`] = `
+"
+p {
+  width: 1rem;
+  height: 1rem;
+  font-size: 2em;
+  text-align: center;
+}
+"
+`;
