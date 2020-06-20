@@ -1,5 +1,5 @@
 <template>
-  <p>{{ greeting }} World!</p>
+  <p v-show="true" aria-disabled title="Hello World!">{{ greeting }} World!</p>
 </template>
 
 <script lang="ts">

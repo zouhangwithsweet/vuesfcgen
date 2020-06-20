@@ -1,5 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`createCodegenContext 1`] = `
+"<template>
+  <h1>Hello</h1>
+  </template>
+    "
+`;
+
+exports[`injectProps 1`] = `"<p v-show=\\"true\\" aria-disabled title</p>"`;
+
 exports[`transformScript 1`] = `
 "\\"use strict\\";
 
