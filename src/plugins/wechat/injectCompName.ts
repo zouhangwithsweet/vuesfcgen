@@ -4,6 +4,20 @@ import { hyphenate } from '@vue/shared'
 type Babel = typeof babel
 
 // babel plugin
+/**
+ * 替换 components 配置的 key
+ * export default {
+ *   componets: {
+ *     [InputItem.name]: InputItem
+ *   }
+ * }
+ * ---
+ * export default {
+ *  componets: {
+ *    ['md-input-item']: InputItem
+ *  }
+ * }
+ */
 export function injectCompName({types: t}: Babel) {
   const compNameVisitor: Visitor<{
     opts: any
