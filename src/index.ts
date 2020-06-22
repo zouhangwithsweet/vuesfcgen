@@ -121,6 +121,34 @@ export function genHTML(ast: TemplateChildNode, context: codeGenContext) {
   }
 }
 
+export function genOpenTag(tag:string, context: codeGenContext, tagMap?: {
+  [k: string]: string
+}) {
+  const { push } = context
+  if (tagMap) {
+    push(`<${tagMap[tag]}>`)
+  } else {
+    push(`<${tag}>`)
+  }
+}
+
+export function genEndTag(
+  tag:string,
+  selfClosing: boolean = false,
+  context: codeGenContext,
+  tagMap?: {
+    [k: string]: string
+  }
+) {
+  const { push, newline } = context
+  if (tagMap) {
+    selfClosing ? push('</>') : push(`</${tagMap[tag]}>`)
+  } else {
+    selfClosing ? push('</>') : push(`</${tag}>`)
+  }
+  newline()
+}
+
 export function injectProps(
   props: Array<AttributeNode | DirectiveNode>,
   context: codeGenContext)
@@ -160,14 +188,14 @@ export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChi
 }
 
 export function createProps(
-  props?: Array<AttributeNode | DirectiveNode>,
+  props?: AttributeNode | DirectiveNode,
   options?: Partial<
-    Array<AttributeNode | DirectiveNode>
+    AttributeNode | DirectiveNode
   >) {
-  return {
+  return [{
     ...cloneDeep(props),
     ...options,
-  }
+  }]
 }
 
 export * from '@vue/compiler-core'
