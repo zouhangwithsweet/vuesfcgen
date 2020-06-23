@@ -6,6 +6,7 @@ import {
 } from '@vue/compiler-core'
 import { transform, BabelFileResult } from '@babel/core'
 import postcss from 'postcss'
+import prettier from 'prettier'
 import cloneDeep from 'lodash/cloneDeep'
 
 const NORMAL_ATTR = 6
@@ -90,7 +91,7 @@ export function genTemplate(ast: TemplateChildNode) {
 
   push('</template>')
   newline()
-  return context
+  return context.code
 }
 
 export function genHTML(ast: TemplateChildNode, context: codeGenContext) {
@@ -100,19 +101,17 @@ export function genHTML(ast: TemplateChildNode, context: codeGenContext) {
       const { tag, isSelfClosing, props } = child
       if (tag) {
         if (isSelfClosing) {
-          push(`<${tag}`)
+          genOpenTag(tag, context)
           injectProps(props, context)
-          push(`/>`)
-          newline()
+          genEndTag(tag, context, true)
         } else {
-          push(`<${tag}`)
+          genOpenTag(tag, context)
           injectProps(props, context)
           push(`>`)
           if (child.children && child.children.length) {
             genHTML(child, context)
           }
-          push(`</${tag}>`)
-          newline()
+          genEndTag(tag, context, false)
         }
       } else {
         push(child.loc.source)
@@ -126,16 +125,16 @@ export function genOpenTag(tag:string, context: codeGenContext, tagMap?: {
 }) {
   const { push } = context
   if (tagMap) {
-    push(`<${tagMap[tag]}>`)
+    push(`<${tagMap[tag]}`)
   } else {
-    push(`<${tag}>`)
+    push(`<${tag}`)
   }
 }
 
 export function genEndTag(
   tag:string,
-  selfClosing: boolean = false,
   context: codeGenContext,
+  selfClosing: boolean = false,
   tagMap?: {
     [k: string]: string
   }
@@ -196,6 +195,16 @@ export function createProp(
     ...cloneDeep(prop),
     ...options,
   } as AttributeNode | DirectiveNode
+}
+
+export function formatCode(code: string) {
+  return prettier.format(code, {
+    parser: 'vue',
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  })
 }
 
 export * from '@vue/compiler-core'
