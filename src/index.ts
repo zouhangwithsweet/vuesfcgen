@@ -157,8 +157,8 @@ export function injectProps(
   props.forEach(prop => {
     push(` `)
     const { type, name, loc } = prop
-    const value = (props as any).value
     if (type === NORMAL_ATTR) {
+      const value = (prop as AttributeNode).value
       value
         ? push(`${name}="${value.content}"`)
         : push(`${name}`)
@@ -180,22 +180,22 @@ export function genDirectiveAttr(
   push('')
 }
 
-export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>) {
+export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>): TemplateChildNode {
   return {
     ...cloneDeep(ast),
     ...options,
-  }
+  } as TemplateChildNode
 }
 
-export function createProps(
-  props?: AttributeNode | DirectiveNode,
+export function createProp(
+  prop?: AttributeNode | DirectiveNode,
   options?: Partial<
     AttributeNode | DirectiveNode
-  >) {
-  return [{
-    ...cloneDeep(props),
+  >): AttributeNode | DirectiveNode {
+  return {
+    ...cloneDeep(prop),
     ...options,
-  }]
+  } as AttributeNode | DirectiveNode
 }
 
 export * from '@vue/compiler-core'
