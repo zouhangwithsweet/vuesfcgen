@@ -1,19 +1,16 @@
 import fs from 'fs'
 import path from 'path'
-import {
-  baseParse,
-  RootNode,
-  AttributeNode,
-  NodeTypes,
-  TemplateChildNode,
-  DirectiveNode,
-} from '@vue/compiler-core'
+import { baseParse } from '@vue/compiler-core'
 import {
   transformScript,
   transformStyle,
   createCodegenContext,
   injectProps,
+  createNode,
+  createProp,
 } from '../../src/index'
+import { elementNodeStub, getElementNodeStub, attributeNodeStub } from '../stubs'
+
 const filePath = path.resolve(__dirname, './Index.vue')
 
 const content = fs.readFileSync(filePath).toString()
@@ -58,19 +55,27 @@ test('createCodegenContext', () => {
 })
 
 test('injectProps', () => {
-  const templateNode = rootNode.children.find(
-    (_) => 'tag' in _ && _.tag === 'template',
-  )
-  if (templateNode) {
-    const context = createCodegenContext(templateNode)
-    context.push('<p')
-    if ('children' in templateNode) {
-      templateNode.children.forEach((_: any) => {
-        const props: Array<AttributeNode | DirectiveNode> = _.props
-        injectProps(props, context)
-      })
-    }
-    context.push('</p>')
-    expect(context.code).toMatchSnapshot()
-  }
+  const node = createNode(elementNodeStub)
+  const prop = createProp(attributeNodeStub)
+  const context = createCodegenContext(node)
+  context.push('<p')
+  injectProps([prop], context)
+  context.push('>')
+  context.push('</p>')
+  expect(context.code).toMatchSnapshot()
+})
+
+test('createNode', () => {
+  const node = createNode(elementNodeStub)
+  expect(node).toMatchSnapshot()
+})
+
+test('createProp', () => {
+  const prop = createProp(attributeNodeStub)
+  expect(prop).toMatchSnapshot()
+})
+
+// BUG
+test.skip('getElementNodeStub', () => {
+  getElementNodeStub()
 })

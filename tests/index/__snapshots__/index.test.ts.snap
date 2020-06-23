@@ -7,7 +7,70 @@ exports[`createCodegenContext 1`] = `
     "
 `;
 
-exports[`injectProps 1`] = `"<p v-show=\\"true\\" aria-disabled title</p>"`;
+exports[`createNode 1`] = `
+Object {
+  "children": Array [],
+  "codegenNode": undefined,
+  "isSelfClosing": false,
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 1,
+      "offset": 0,
+    },
+    "source": "",
+    "start": Object {
+      "column": 1,
+      "line": 1,
+      "offset": 0,
+    },
+  },
+  "ns": 0,
+  "props": Array [],
+  "tag": "h1",
+  "tagType": 0,
+  "type": 1,
+}
+`;
+
+exports[`createProp 1`] = `
+Object {
+  "loc": Object {
+    "end": Object {
+      "column": 1,
+      "line": 1,
+      "offset": 0,
+    },
+    "source": "",
+    "start": Object {
+      "column": 1,
+      "line": 1,
+      "offset": 0,
+    },
+  },
+  "name": "title",
+  "type": 6,
+  "value": Object {
+    "content": "Title",
+    "loc": Object {
+      "end": Object {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+      "source": "",
+      "start": Object {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+    },
+    "type": 2,
+  },
+}
+`;
+
+exports[`injectProps 1`] = `"<p title=\\"Title\\"></p>"`;
 
 exports[`transformScript 1`] = `
 "\\"use strict\\";
