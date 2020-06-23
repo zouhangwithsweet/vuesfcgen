@@ -166,6 +166,7 @@ export function injectProps(
     } else {
       push(loc.source)
     }
+    context.code = context.code.trim()
   })
 }
 

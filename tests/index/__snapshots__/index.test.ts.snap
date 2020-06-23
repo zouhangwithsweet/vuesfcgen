@@ -27,7 +27,7 @@ Object {
   },
   "ns": 0,
   "props": Array [],
-  "tag": "h1",
+  "tag": "",
   "tagType": 0,
   "type": 1,
 }
@@ -48,10 +48,10 @@ Object {
       "offset": 0,
     },
   },
-  "name": "title",
+  "name": "",
   "type": 6,
   "value": Object {
-    "content": "Title",
+    "content": "",
     "loc": Object {
       "end": Object {
         "column": 1,
@@ -70,7 +70,7 @@ Object {
 }
 `;
 
-exports[`injectProps 1`] = `"<p title=\\"Title\\"></p>"`;
+exports[`injectProps 1`] = `"<p title=\\"Title\\" disabled v-show=\\"true\\"></p>"`;
 
 exports[`transformScript 1`] = `
 "\\"use strict\\";
@@ -89,6 +89,8 @@ var _default = {
 };
 exports.default = _default;"
 `;
+
+exports[`transformScript 2`] = `""`;
 
 exports[`transformStyle 1`] = `
 "

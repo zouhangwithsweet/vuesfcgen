@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { baseParse } from '@vue/compiler-core'
+import { baseParse, locStub } from '@vue/compiler-core'
 import {
   transformScript,
   transformStyle,
@@ -9,7 +9,7 @@ import {
   createNode,
   createProp,
 } from '../../src/index'
-import { elementNodeStub, getElementNodeStub, attributeNodeStub } from '../stubs'
+import { elementNodeStub, getElementNodeStub, attributeNodeStub, textNodeStub, directiveNodeStub } from '../stubs'
 
 const filePath = path.resolve(__dirname, './Index.vue')
 
@@ -17,23 +17,42 @@ const content = fs.readFileSync(filePath).toString()
 const rootNode = baseParse(content)
 
 test('transformScript', async () => {
-  const scriptNode = rootNode.children.find(
+  const targetNode = rootNode.children.find(
     (_) => 'tag' in _ && _.tag === 'script',
   )
-  if (scriptNode) {
-    const result = await transformScript(scriptNode, { filename: 'file.ts' })
+
+  if (targetNode) {
+    const result = await transformScript(targetNode, { filename: 'file.ts' })
     expect(result).toMatchSnapshot()
+  }
+
+  const otherNode = createNode(elementNodeStub)
+  const emptyResult = await transformScript(otherNode, { filename: 'file.ts' })
+  expect(emptyResult).toBe('')
+
+  try {
+    const errorNode = createNode(elementNodeStub, {
+      tag: 'script'
+    })
+    await transformScript(errorNode)
+  } catch (error) {
+    expect(emptyResult).toMatchSnapshot()
   }
 })
 
 test('transformStyle', async () => {
-  const scriptNode = rootNode.children.find(
+  const targetNode = rootNode.children.find(
     (_) => 'tag' in _ && _.tag === 'style',
   )
-  if (scriptNode) {
-    const result = await transformStyle(scriptNode)
+
+  if (targetNode) {
+    const result = await transformStyle(targetNode)
     expect(result).toMatchSnapshot()
   }
+
+  const otherNode = createNode(elementNodeStub)
+  const emptyResult = await transformStyle(otherNode, { filename: 'file.ts' })
+  expect(emptyResult).toBe('')
 })
 
 test('createCodegenContext', () => {
@@ -56,10 +75,13 @@ test('createCodegenContext', () => {
 
 test('injectProps', () => {
   const node = createNode(elementNodeStub)
-  const prop = createProp(attributeNodeStub)
+  const prop = createProp(attributeNodeStub, { name: 'title', value: {...textNodeStub, content: 'Title'} })
+  const propWithoutVal = createProp(attributeNodeStub, { name: 'disabled', value: undefined })
+  const propDirective = createProp(directiveNodeStub, { name: 'v-show', loc: { ...locStub, source: `v-show="true"` } })
+  const propUnSupportType = createProp(attributeNodeStub, { type: 0 })
   const context = createCodegenContext(node)
   context.push('<p')
-  injectProps([prop], context)
+  injectProps([prop, propWithoutVal, propDirective, propUnSupportType], context)
   context.push('>')
   context.push('</p>')
   expect(context.code).toMatchSnapshot()

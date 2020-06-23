@@ -3,13 +3,21 @@ import {
   NodeTypes,
   locStub,
   AttributeNode,
+  TextNode,
+  DirectiveNode,
 } from '@vue/compiler-core'
+
+export const textNodeStub: TextNode = {
+  type: 2,
+  content: '',
+  loc: locStub,
+}
 
 export const elementNodeStub: ElementNode = {
   type: 1,
   loc: locStub,
   ns: 0,
-  tag: 'h1',
+  tag: '',
   tagType: 0,
   isSelfClosing: false,
   props: [],
@@ -19,13 +27,18 @@ export const elementNodeStub: ElementNode = {
 
 export const attributeNodeStub: AttributeNode = {
   type: 6,
-  name: 'title',
+  name: '',
   loc: locStub,
-  value: {
-    type: 2,
-    content: 'Title',
-    loc: locStub,
-  }
+  value: textNodeStub,
+}
+
+export const directiveNodeStub: DirectiveNode = {
+  type: 7,
+  name: '',
+  loc: locStub,
+  exp: undefined,
+  arg: undefined,
+  modifiers: []
 }
 
 // BUG
