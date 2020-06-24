@@ -141,9 +141,9 @@ export function genEndTag(
 ) {
   const { push, newline } = context
   if (tagMap) {
-    selfClosing ? push('</>') : push(`</${tagMap[tag]}>`)
+    selfClosing ? push('/>') : push(`</${tagMap[tag]}>`)
   } else {
-    selfClosing ? push('</>') : push(`</${tag}>`)
+    selfClosing ? push('/>') : push(`</${tag}>`)
   }
   newline()
 }
@@ -187,15 +187,13 @@ export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChi
   } as TemplateChildNode
 }
 
-export function createProp(
-  prop?: AttributeNode | DirectiveNode,
-  options?: Partial<
-    AttributeNode | DirectiveNode
-  >): AttributeNode | DirectiveNode {
+export function createProp<T = AttributeNode | DirectiveNode>(
+  prop?: T,
+  options?: Partial<T>): T {
   return {
     ...cloneDeep(prop),
     ...options,
-  } as AttributeNode | DirectiveNode
+  } as T
 }
 
 export function formatCode(code: string) {

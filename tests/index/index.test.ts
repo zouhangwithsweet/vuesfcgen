@@ -8,6 +8,12 @@ import {
   injectProps,
   createNode,
   createProp,
+  genOpenTag,
+  genEndTag,
+  genDirectiveAttr,
+  formatCode,
+  genHTML,
+  genTemplate,
 } from '../../src/index'
 import { elementNodeStub, getElementNodeStub, attributeNodeStub, textNodeStub, directiveNodeStub } from '../stubs'
 
@@ -73,6 +79,27 @@ test('createCodegenContext', () => {
   }
 })
 
+test('genTemplate', () => {
+  const targetNode = rootNode.children.find(
+    (_) => 'tag' in _ && _.tag === 'template',
+  )
+  if (targetNode) {
+    const code = genTemplate(targetNode)
+    expect(code).toMatchSnapshot()
+  }
+})
+
+test('genHTML', () => {
+  const targetNode = rootNode.children.find(
+    (_) => 'tag' in _ && _.tag === 'template',
+  )
+  if (targetNode) {
+    const context = createCodegenContext(targetNode)
+    genHTML(targetNode, context)
+    expect(context.code).toMatchSnapshot()
+  }
+})
+
 test('injectProps', () => {
   const node = createNode(elementNodeStub)
   const prop = createProp(attributeNodeStub, { name: 'title', value: {...textNodeStub, content: 'Title'} })
@@ -95,6 +122,67 @@ test('createNode', () => {
 test('createProp', () => {
   const prop = createProp(attributeNodeStub)
   expect(prop).toMatchSnapshot()
+})
+
+test('genOpenTag', () => {
+  const node = createNode(elementNodeStub)
+  const context = createCodegenContext(node)
+  context.code = ''
+  genOpenTag('h1', context)
+  expect(context.code).toBe('<h1')
+  context.code = ''
+  genOpenTag('h1', context, {
+    'h1': 'p'
+  })
+  expect(context.code).toBe('<p')
+})
+
+test('genEndTag', () => {
+  const node = createNode(elementNodeStub)
+  const context = createCodegenContext(node)
+  context.code = ''
+  genEndTag('h1', context)
+  expect(context.code).toBe(`</h1>
+  `)
+  context.code = ''
+  genEndTag('br', context, true)
+  expect(context.code).toBe(`/>
+  `)
+  context.code = ''
+  genEndTag('h1', context, false, {
+    'h1': 'p'
+  })
+  expect(context.code).toBe(`</p>
+  `)
+  context.code = ''
+  genEndTag('br', context, true, {
+    'br': 'divider'
+  })
+  expect(context.code).toBe(`/>
+  `)
+})
+
+test('genDirectiveAttr', () => {
+  const propDirective = createProp(directiveNodeStub, { name: 'v-show', loc: { ...locStub, source: `v-show="true"` } })
+  const node = createNode(elementNodeStub)
+  const context = createCodegenContext(node)
+  genDirectiveAttr(propDirective, context)
+  expect(context.code).toBe('')
+})
+
+test('formatCode', () => {
+  const result = formatCode(`
+    <script lang="ts">
+    export default {
+      data() {
+        return {
+          greeting: "Hello"
+        }
+      },
+    }
+    </script>
+  `);
+  expect(result).toMatchSnapshot()
 })
 
 // BUG

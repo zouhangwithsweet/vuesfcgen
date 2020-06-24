@@ -70,6 +70,35 @@ Object {
 }
 `;
 
+exports[`formatCode 1`] = `
+"<script lang=\\"ts\\">
+export default {
+  data() {
+    return {
+      greeting: 'Hello',
+    }
+  },
+}
+</script>
+"
+`;
+
+exports[`genHTML 1`] = `
+"<div><p v-show=\\"true\\" aria-disabled title=\\"Hello World!\\">{{ greeting }} World!</p>
+  <br/>
+  </div>
+  "
+`;
+
+exports[`genTemplate 1`] = `
+"<template>
+  <div><p v-show=\\"true\\" aria-disabled title=\\"Hello World!\\">{{ greeting }} World!</p>
+  <br/>
+  </div>
+  </template>
+  "
+`;
+
 exports[`injectProps 1`] = `"<p title=\\"Title\\" disabled v-show=\\"true\\"></p>"`;
 
 exports[`transformScript 1`] = `
