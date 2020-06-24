@@ -117,7 +117,13 @@ test('injectProps', () => {
   const node = createNode(elementNodeStub)
   const prop = createProp(attributeNodeStub, { name: 'title', value: {...textNodeStub, content: 'Title'} })
   const propWithoutVal = createProp(attributeNodeStub, { name: 'disabled', value: undefined })
-  const propDirective = createProp(directiveNodeStub, { name: 'v-show', loc: { ...locStub, source: `v-show="true"` } })
+  const propDirective = createProp(directiveNodeStub, { name: 'show', loc: locStub, exp: {
+    type: 4,
+    content: 'true',
+    isStatic: false,
+    isConstant: false,
+    loc: locStub,
+  }})
   const propUnSupportType = createProp(attributeNodeStub, { type: 0 })
   const context = createCodegenContext(node)
   context.push('<p')
@@ -176,11 +182,20 @@ test('genEndTag', () => {
 })
 
 test('genDirectiveAttr', () => {
-  const propDirective = createProp(directiveNodeStub, { name: 'v-show', loc: { ...locStub, source: `v-show="true"` } })
+  const propDirective = createProp(directiveNodeStub, {
+    name: 'show',
+    loc: locStub,
+    exp: {
+      type: 4,
+      content: 'true',
+      isStatic: false,
+      isConstant: false,
+      loc: locStub,
+    }})
   const node = createNode(elementNodeStub)
   const context = createCodegenContext(node)
   genDirectiveAttr(propDirective, context)
-  expect(context.code).toBe('')
+  expect(context.code).toBe(`v-show="true"`)
 })
 
 test('formatCode', () => {
