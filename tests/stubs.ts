@@ -5,6 +5,7 @@ import {
   AttributeNode,
   TextNode,
   DirectiveNode,
+  InterpolationNode,
 } from '@vue/compiler-core'
 
 export const textNodeStub: TextNode = {
@@ -39,6 +40,18 @@ export const directiveNodeStub: DirectiveNode = {
   exp: undefined,
   arg: undefined,
   modifiers: []
+}
+
+export const interpolationNodeStub: InterpolationNode = {
+  type: 5,
+  loc: locStub,
+  content: {
+    loc: locStub,
+    type: 4,
+    content: '',
+    isStatic: false,
+    isConstant: false,
+  }
 }
 
 // BUG

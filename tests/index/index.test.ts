@@ -15,7 +15,7 @@ import {
   genHTML,
   genTemplate,
 } from '../../src/index'
-import { elementNodeStub, getElementNodeStub, attributeNodeStub, textNodeStub, directiveNodeStub } from '../stubs'
+import { elementNodeStub, getElementNodeStub, attributeNodeStub, textNodeStub, directiveNodeStub, interpolationNodeStub } from '../stubs'
 
 const filePath = path.resolve(__dirname, './Index.vue')
 
@@ -35,6 +35,10 @@ test('transformScript', async () => {
   const otherNode = createNode(elementNodeStub)
   const emptyResult = await transformScript(otherNode, { filename: 'file.ts' })
   expect(emptyResult).toBe('')
+
+  const interpolationNode = createNode(interpolationNodeStub)
+  const emptyResult2 = await transformScript(interpolationNode, { filename: 'file.ts' })
+  expect(emptyResult2).toBe('')
 
   try {
     const errorNode = createNode(elementNodeStub, {
@@ -59,6 +63,10 @@ test('transformStyle', async () => {
   const otherNode = createNode(elementNodeStub)
   const emptyResult = await transformStyle(otherNode, { filename: 'file.ts' })
   expect(emptyResult).toBe('')
+
+  const interpolationNode = createNode(interpolationNodeStub)
+  const emptyResult2 = await transformStyle(interpolationNode, { filename: 'file.ts' })
+  expect(emptyResult2).toBe('')
 })
 
 test('createCodegenContext', () => {
@@ -97,6 +105,11 @@ test('genHTML', () => {
     const context = createCodegenContext(targetNode)
     genHTML(targetNode, context)
     expect(context.code).toMatchSnapshot()
+
+    context.code = ''
+    const interpolationNode = createNode(interpolationNodeStub)
+    genHTML(interpolationNode, context)
+    expect(context.code).toBe('')
   }
 })
 
