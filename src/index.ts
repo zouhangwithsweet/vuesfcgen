@@ -2,7 +2,7 @@ import {
   baseParse,
   TemplateChildNode,
   AttributeNode,
-  DirectiveNode
+  DirectiveNode,
 } from '@vue/compiler-core'
 import { transform, BabelFileResult } from '@babel/core'
 import postcss from 'postcss'
@@ -162,7 +162,7 @@ export function injectProps(
         ? push(`${name}="${value.content}"`)
         : push(`${name}`)
     } else if (type === DIRECTIVE_ATTR) {
-      push(loc.source)
+      genDirectiveAttr(prop as DirectiveNode, context)
     } else {
       push(loc.source)
     }
@@ -170,14 +170,32 @@ export function injectProps(
   })
 }
 
-// todo
 export function genDirectiveAttr(
   node: DirectiveNode,
   context: codeGenContext,
-  options?: any)
+  options?: Partial<DirectiveNode>)
 {
   const { push } = context
-  push('')
+  const { name, exp, arg, modifiers} = node
+  push('v-')
+  push(`${name}`)
+  // how to format CompoundExpressionNode 
+  if (arg) {
+    if ('content' in arg) {
+      // isConstant for what?
+      const { content, isStatic } = arg
+      isStatic ? push(`${content}`) : push(`[${content}]`)
+    }
+  }
+  push(modifiers.map(m => '.' + m).join())
+  if (exp) {
+    push('=')
+    if ('content' in exp) {
+      // isConstant for what?
+      const { content } = exp
+      push(`"${content}"`)
+    }
+  }
 }
 
 export function createNode(ast: TemplateChildNode, options?: Partial<TemplateChildNode>): TemplateChildNode {
