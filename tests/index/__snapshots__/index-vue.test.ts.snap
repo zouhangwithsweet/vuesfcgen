@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default 1`] = `
+"<div>
+  <p aria-disabled=\\"\\" title=\\"Hello World!\\">Hello World!</p> <br>
+  <h1></h1>
+</div>"
+`;
