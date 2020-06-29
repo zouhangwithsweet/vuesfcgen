@@ -66,13 +66,13 @@ interface codeGenContext {
 }
 
 // gen template
-export function createCodegenContext(ast: TemplateChildNode): codeGenContext {
+export function createCodegenContext(ast?: TemplateChildNode): codeGenContext {
   const context = {
     code: ``,
     push(code: string) {
       context.code += code
     },
-    source: ast.loc.source,
+    source: ast?.loc.source ?? '',
     newline(n = 2) {
       context.push('\n' + ` `.repeat(n))
     }
@@ -179,7 +179,7 @@ export function genDirectiveAttr(
   const { name, exp, arg, modifiers} = node
   push('v-')
   push(`${name}`)
-  // how to format CompoundExpressionNode 
+  // how to format CompoundExpressionNode
   if (arg) {
     if ('content' in arg) {
       // isConstant for what?
