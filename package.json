@@ -2,10 +2,12 @@
   "name": "vuesfcgen",
   "version": "0.0.1",
   "description": "Vue sfc code generator",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "module": "lib-module/index.js",
   "scripts": {
     "cz": "npx git-cz",
-    "test": "jest"
+    "test": "jest",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,8 @@
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-typescript": "^7.10.1",
+    "@rollup/plugin-node-resolve": "^8.1.0",
+    "@rollup/plugin-typescript": "^5.0.1",
     "@types/babel__core": "^7.1.8",
     "@types/jest": "^26.0.0",
     "@types/lodash": "^4.14.155",
@@ -41,6 +45,8 @@
     "ora": "^4.0.4",
     "postcss": "^7.0.32",
     "postcss-pxtorem": "^5.1.1",
+    "rollup": "^2.18.1",
+    "rollup-plugin-commonjs": "^10.1.0",
     "typescript": "^3.9.5",
     "vue": "^2.6.11",
     "vue-jest": "^3.0.5",

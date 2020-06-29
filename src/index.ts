@@ -43,6 +43,10 @@ export async function transformStyle(ast: TemplateChildNode, options?: any) {
     if (ast.tag === 'style') {
       const sourceCode = ast.loc.source.replace(/<style.*>|<\/style.*>/g, '')
       let code = ``
+      // 不处理 css 预处理
+      if (ast.props.map(p => p.name).includes('lang')) {
+        return sourceCode
+      }
       const result = await postcss([
         require('autoprefixer'),
         require('postcss-pxtorem')({
