@@ -2,6 +2,7 @@
 node_modules
 public
 lib
+lib-module
 dist/*.gz
 dist/*.map
 coverage
