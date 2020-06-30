@@ -1,6 +1,7 @@
 import commonjs from 'rollup-plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import resolve from '@rollup/plugin-node-resolve'
+import { terser } from 'rollup-plugin-terser'
 
 const external = [
   '@vue/compiler-core',
@@ -11,6 +12,7 @@ const external = [
 ]
 
 const plugins = [
+  terser(),
   commonjs(),
   resolve(),
 ]
@@ -28,6 +30,7 @@ export default [
     },
     plugins: [
       typescript({
+        target: 'ES5',
         declaration: true,
         declarationDir: 'lib-module/types',
         sourceMap: false,
@@ -43,7 +46,10 @@ export default [
       dir: 'lib-module/plugins/wechat'
     },
     plugins: [
-      typescript({ sourceMap: false, }),
+      typescript({
+        target: 'ES5',
+        sourceMap: false,
+      }),
       ...plugins,
     ],
     external,
@@ -57,6 +63,7 @@ export default [
     },
     plugins: [
       typescript({
+        target: 'ES5',
         declaration: true,
         declarationDir: 'lib/types',
         sourceMap: false,
@@ -72,7 +79,10 @@ export default [
       dir: 'lib-module/plugins/wechat'
     },
     plugins: [
-      typescript({ sourceMap: false, }),
+      typescript({
+        target: 'ES5',
+        sourceMap: false,
+      }),
       ...plugins,
     ],
     external,

@@ -47,6 +47,7 @@
     "postcss-pxtorem": "^5.1.1",
     "rollup": "^2.18.1",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-terser": "^6.1.0",
     "typescript": "^3.9.5",
     "vue": "^2.6.11",
     "vue-jest": "^3.0.5",
