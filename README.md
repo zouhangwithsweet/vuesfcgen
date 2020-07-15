@@ -1,4 +1,4 @@
-# vuesfcgen
+# vuesfcgen(WIP)
 Vue sfc code generator
 
 ### profile
