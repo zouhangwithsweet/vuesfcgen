@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { mount } from '@vue/test-utils'
 import Index from './Index.vue'
-import { baseParse } from '@vue/compiler-core'
+import { baseParse } from '@vue/compiler-dom'
 import { transformScript, transformStyle, genTemplate, createCodegenContext, formatCode } from '../../src/index'
 
 test('default', () => {

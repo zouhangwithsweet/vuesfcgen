@@ -3,7 +3,7 @@ import {
   TemplateChildNode,
   AttributeNode,
   DirectiveNode,
-} from '@vue/compiler-core'
+} from '@vue/compiler-dom'
 import { transform, BabelFileResult } from '@babel/core'
 import postcss from 'postcss'
 import prettier from 'prettier'
@@ -228,5 +228,5 @@ export function formatCode(code: string) {
   })
 }
 
-export * from '@vue/compiler-core'
+export * from '@vue/compiler-dom'
 export {}

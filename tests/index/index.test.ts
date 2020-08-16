@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { baseParse, locStub } from '@vue/compiler-core'
+import { baseParse, locStub } from '@vue/compiler-dom'
 import {
   transformScript,
   transformStyle,

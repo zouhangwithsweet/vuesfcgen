@@ -6,7 +6,7 @@ import {
   TextNode,
   DirectiveNode,
   InterpolationNode,
-} from '@vue/compiler-core'
+} from '@vue/compiler-dom'
 
 export const textNodeStub: TextNode = {
   type: 2,

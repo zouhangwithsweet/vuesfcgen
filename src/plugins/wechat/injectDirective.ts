@@ -1,4 +1,4 @@
-import { DirectiveNode, AttributeNode, NodeTypes, locStub } from '@vue/compiler-core'
+import { DirectiveNode, AttributeNode, NodeTypes, locStub } from '@vue/compiler-dom'
 
 const delimitersWrap = (code: string) => '{{' + code + '}}'
 

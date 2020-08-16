@@ -14,7 +14,7 @@
     "url": "git+https://github.com/zouhangwithsweet/vuesfcgen.git"
   },
   "keywords": [
-    "@vue/compiler-core",
+    "@vue/compiler-dom",
     "codegen"
   ],
   "author": "",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/zouhangwithsweet/vuesfcgen#readme",
   "dependencies": {
-    "@vue/compiler-core": "^3.0.0-beta.15",
+    "@vue/compiler-dom": "^3.0.0-rc.5",
     "lodash": "^4.17.15",
     "prettier": "^2.0.5"
   },

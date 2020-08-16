@@ -1,4 +1,4 @@
-import { AttributeNode, NodeTypes, locStub } from '@vue/compiler-core'
+import { AttributeNode, NodeTypes, locStub } from '@vue/compiler-dom'
 
 export function injectImgMode(options: {
   [k: string]: string

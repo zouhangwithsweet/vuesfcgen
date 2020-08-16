@@ -4,7 +4,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 
 const external = [
-  '@vue/compiler-core',
+  '@vue/compiler-dom',
   '@babel/core',
   'postcss',
   'prettier',
